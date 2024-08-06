@@ -1,0 +1,13 @@
+services:
+  kubectl:
+    image: alpine:latest
+    container_name: kubectl
+    volumes:
+      - ./kubeconfig/personal.yaml:/root/.kube/config:ro
+      - ./apps:/apps
+    ports:
+      - 8001:8001
+    command:
+      ["sh", "-c", "apk add --no-cache kubectl && sh -c 'tail -f /dev/null'"]
+    stdin_open: true
+    tty: true

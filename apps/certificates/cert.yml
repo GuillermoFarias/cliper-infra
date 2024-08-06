@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-token-secret
+  namespace: certificates
+type: Opaque
+stringData:
+  api-token: rM5mq8UIUjmXkzHaWpWbh_37lT71obhSebAMVCjx
+
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: wildcard-gfarias-cl-ca
+  namespace: certificates
+spec:
+  acme:
+    email: guillermodanilo08@gmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: wildcard-gfarias-cl-ca
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-api-token-secret
+              key: api-token
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gfarias-cl-tls
+  namespace: certificates
+spec:
+  secretName: wildcard-gfarias-cl-tls
+  duration: 2160h # 90d
+  renewBefore: 720h # 30d before SSL will expire, renew it
+  issuerRef:
+    name: wildcard-gfarias-cl-ca
+    kind: Issuer
+  commonName: "*.gfarias.cl"
+  dnsNames:
+    - "*.gfarias.cl"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "cliper" # Control destination namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true" # Auto create reflection for matching namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "cliper" # Control auto-reflection namespaces
+

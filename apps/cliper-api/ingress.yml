@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cliper-ingress
+  namespace: cliper
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/server-alias: cliper.gfarias.cl
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: cliper.gfarias.cl
+      http:
+        paths:
+          - backend:
+              service:
+                name: cliper-api
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - "*.gfarias.cl"
+      secretName: wildcard-gfarias-cl-tls

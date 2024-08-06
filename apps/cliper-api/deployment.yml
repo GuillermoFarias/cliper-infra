@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cliper-api
+  namespace: cliper
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: cliper-api
+  template:
+    metadata:
+      labels:
+        app: cliper-api
+    spec:
+      containers:
+        - name: cliper-api
+          image: ewr.vultrcr.com/cliper/cliper-api:fffb3d1
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: cliper-config
+            - secretRef:
+                name: cliper-secrets

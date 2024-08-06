@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cliper-front
+  namespace: cliper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cliper-front
+  template:
+    metadata:
+      labels:
+        app: cliper-front
+    spec:
+      containers:
+        - name: cliper-front
+          image: ewr.vultrcr.com/cliper/cliper-front:02f1240
+          ports:
+            - containerPort: 80
