@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cliper-rolebinding
+  namespace: cliper
+subjects:
+  - kind: User
+    name: guest-meli
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: cliper-role
+  apiGroup: rbac.authorization.k8s.io

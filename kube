@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Define the kubeconfig file
-KUBECONFIG_FILE="kubeconfig/personal.yaml"
+KUBECONFIG_FILE="kubeconfigs/personal.yaml"
 
 # Check if the kubeconfig file exists
 if [ ! -f "$KUBECONFIG_FILE" ]; then
